@@ -1,0 +1,9 @@
+#include <iostream>
+#include <cstring>
+
+int main {
+  map<char*, int> names;
+  names.insert("hello", 3);
+  cout << names["hello"] << endl;
+  return 0;
+}

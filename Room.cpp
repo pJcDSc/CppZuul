@@ -32,3 +32,23 @@ map<char*, Room*>* Room::getExits() {
 bool Room::getLocked(char* c) {
   return exitLocked[c];
 }
+
+//Get Exit Description
+char* Room::getExitDesc(char* c) {
+  return exitDescs[c];
+}
+
+//Toggle locked exit
+bool Room::toggleLock(char* c) {
+  bool originalState = exitLocked[c];
+  exitLocked[c] = !originalState;
+  return originalState;
+}
+
+//Set Description of Exit
+void Room::setExitDesc(char* c, char* d) {
+  exitDescs[c] = d;
+}
+
+
+

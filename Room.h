@@ -47,6 +47,9 @@ class Room {
 
   //Get Exit Description
   char* getExitDesc(char*);
+
+  //Set Exit Description
+  void setExitDesc(char*, char*);
   
  private:
 
