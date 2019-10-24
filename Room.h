@@ -37,7 +37,7 @@ class Room {
   char* getDescription();
 
   //Toggle locked exit
-  bool toggleLock(char*);
+  int toggleLock(char*, int);
 
   //Get Exits
   map<char*, Room*>* getExits();
@@ -50,6 +50,9 @@ class Room {
 
   //Set Exit Description
   void setExitDesc(char*, char*);
+
+  //Destructor
+  ~Room();
   
  private:
 
@@ -57,7 +60,7 @@ class Room {
   vector<Item*>* itemList;
   map<char*, Room*>* exits;
   map<char*, char*>* exitDescs;
-  map<char*, bool>* exitLocked;
+  map<char*, int>* exitLocked;
   char* desc;
   char* name;
 

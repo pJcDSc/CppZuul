@@ -7,6 +7,7 @@ Room Class
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <iterator>
 #include "Room.h"
 #include "Item.h"
 
@@ -39,9 +40,9 @@ char* Room::getExitDesc(char* c) {
 }
 
 //Toggle locked exit
-bool Room::toggleLock(char* c) {
-  bool originalState = exitLocked[c];
-  exitLocked[c] = !originalState;
+bool Room::toggleLock(char* c, int i) {
+  int originalState = exitLocked[c];
+  exitLocked[c] = i;
   return originalState;
 }
 
@@ -50,5 +51,22 @@ void Room::setExitDesc(char* c, char* d) {
   exitDescs[c] = d;
 }
 
+//Destructor 
+Room::~Room() {
+  //FINISH DESTRUCTOR
+  vector<Item*>::iterator vecIt = itemList -> begin();
+  while (vecIt != itemList -> end()) {
+    delete (*vecIt);
+    vecIt = itemList -> erase(vecIt);
+  }
+  delete itemList;
 
+  map<char*, Room*>*::iterator mapIt = exits -> begin();
+  while (mapIt != exits -> end()) {
+    delete (*mapIt);
+    mapIt = exits -> erase(vecIt);
+  }
+  delete exits;
+  delete exitDescs;
+} 
 

@@ -5,9 +5,9 @@
 using namespace std;
 
 int main() {
-  map<char*, int> names;
-  names.insert({"hello", 3});
-  names["hello"] = 4;
-  cout << names["hello"] << endl;
+  int a = 0;
+  cout << a << endl;
+  char a = 'a';
+  cout << a << endl;
   return 0;
 }
