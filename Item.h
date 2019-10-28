@@ -1,3 +1,6 @@
+#ifndef ITEM_H
+#define ITEM_H
+
 #include <iostream>
 #include <cstring>
 
@@ -8,10 +11,10 @@ class Item {
  public:
 
   //Constructor
-  Item(*char);
+  Item(char*);
 
   //Overloaded constructor
-  Item(*char, int);
+  Item(char*, int);
 
   //Destructor
   ~Item();
@@ -19,8 +22,8 @@ class Item {
  private:
 
   int keyVal;
-  *char name;
+  char* name;
 
 };
 
-  
+#endif

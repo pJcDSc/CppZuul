@@ -7,6 +7,7 @@ Room Class Header
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <map>
 #include "Item.h"
 
 using namespace std;
@@ -43,7 +44,7 @@ class Room {
   map<char*, Room*>* getExits();
 
   //Get Exit locked
-  bool getLocked(char*);
+  int getLocked(char*);
 
   //Get Exit Description
   char* getExitDesc(char*);
