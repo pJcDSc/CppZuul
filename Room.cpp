@@ -21,9 +21,37 @@ Room::Room(char* n, char* d) {
   this -> desc = d;
 }
 
+//Get name
+char* Room::getName() {
+  return name;
+}
+
+//Get Description
+char* Room::getDescription() {
+  return desc;
+}
+
 //Get Items
 vector<Item*>* Room::getItems() {
   return itemList;
+}
+
+//Add Item
+Item* Room::addItem(Item* i) {
+  itemList -> push_back(i);
+  return i;
+}
+
+//Remove items
+void Room::removeItem(Item* i) {
+  vector<Item*>::iterator it = itemList -> begin();
+  while(it != itemList -> end()) {
+    if (i == *it) {
+      delete *it;
+      itemList -> erase(it);
+      return;
+    }
+  }
 }
 
 //Get Exits
@@ -36,9 +64,19 @@ int Room::getLocked(char* c) {
   return (*exitLocked)[c];
 }
 
+//Set Exit
+void Room::setExit(char* c, Room* r) {
+  (*exits)[c] = r;
+}
+
 //Get Exit Description
 char* Room::getExitDesc(char* c) {
   return (*exitDescs)[c];
+}
+
+//Set Exit Description
+void Room::setExitDesc(char* exit, char* exitDesc) {
+  (*exitDescs)[exit] = exitDesc;
 }
 
 //Toggle locked exit

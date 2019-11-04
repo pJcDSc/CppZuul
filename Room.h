@@ -21,15 +21,15 @@ class Room {
 
   //Get Items
   vector<Item*>* getItems();
-
+  
   //Remove Items
-  Item* removeItem(Item*);
+  void removeItem(Item*);
 
   //Add Item
-  void addItem(Item*);
+  Item* addItem(Item*);
 
   //Set Exit
-  Room* setExit(char*, Room*);
+  void setExit(char*, Room*);
 
   //Get Name
   char* getName();
