@@ -86,11 +86,6 @@ int Room::toggleLock(char* c, int i) {
   return originalState;
 }
 
-//Set Description of Exit
-void Room::setExitDesc(char* c, char* d) {
-  (*exitDescs)[c] = d;
-}
-
 //Destructor 
 Room::~Room() {
   cout << "Room Destructor Called" << endl;
