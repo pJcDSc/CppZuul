@@ -9,7 +9,7 @@ using namespace std;
 void addRoom(map<char*, Room*>*, char*, char*); 
 vector<char*>* split(char*, char);
 bool parse(char*);
-bool printHelp();
+void printHelp();
 
 int main() {  
   map<char*, Room*>* m = new map<char*, Room*>;
@@ -31,7 +31,9 @@ int main() {
   addRoom(m, "Tree", "Looks like you can't go back down.");
   addRoom(m, "Art Room", "SO MANY ART SUPPLIES WOOOOOOOOO");
   addRoom(m, "Computer Room", "Coding looks cool");
-  addRoom(m, "Red Ladder Down", "Ladder, red, yadda yadda. Also goes down.");
+  addRoom(m, "Red Ladder Down", "No but why is it red?");
+
+  (*m)["Chest Room"] -> setExit("EAST", (*m)["Waterfall"]);
   
   bool running = true;
   char* command;
@@ -45,7 +47,7 @@ int main() {
   return 0;
 }
 
-void addRoom(map<char*, Room*>* m, char* title, char* desc*) {
+void addRoom(map<char*, Room*>* m, char* title, char* desc) {
   (*m)[title] = new Room(title, desc);
 }
 
@@ -70,17 +72,18 @@ bool parse(char* c) {
   vector<char*>* commands = split(c, ' ');
   for(int i = 0; i < commands -> size(); i++) {
     for(int j = 0; j < strlen(commands -> at(i)); j++) {
-      commands -> at(i) = toupper(commands -> at(i));
+      commands -> at(i)[j] = toupper(commands -> at(i)[j]);
     }
   }
   char* command = commands -> at(0);
   if (strcmp(command, "HELP") == 0) {
     printHelp();
   } else if (strcmp(command, "GO")) {
-    goExit(commands);
+    //goExit(commands);
+  }
   return true;
 }
-  
+
 void printHelp() {
   cout << "Commands: " << endl;
   cout << "\"Go\" + (direction): Take an exit in a specific direction (If it exists)" << endl;
