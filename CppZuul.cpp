@@ -6,11 +6,32 @@
 #include "Item.h"
 using namespace std;
 
+void addRoom(map<char*, Room*>*, char*, char*); 
 vector<char*>* split(char*, char);
 bool parse(char*);
 bool printHelp();
 
 int main() {  
+  map<char*, Room*>* m = new map<char*, Room*>;
+  addRoom(m, "Chest Room", "A chest sits in the center of the room.");
+  addRoom(m, "Waterfall", "Music box triggers memories within you.");
+  addRoom(m, "Red Stairs Up", "Stairs, but red. Probably not blood.");
+  addRoom(m, "Locksmith", "Many keys hang on the walls. This guy is good at making keys.");
+  addRoom(m, "Lonely Room", "Only one door lies in the east.");
+  addRoom(m, "Water Fountain", "It appears to be broken. Maybe you can fix it with a wrench?");
+  addRoom(m, "Western Corridor", "A loooong corridor. Feels like the west one (?)");
+  addRoom(m, "Kitchen", "Why is there a wrench in the kitchen?");
+  addRoom(m, "Red Stairs Down", "Red stairs go down. Not sure why they're red.");
+  addRoom(m, "Eastern Corridor", "A corridor. An east one by the looks of it.");
+  addRoom(m, "A Tree", "Just a sapling. Maybe if you water it?");
+  addRoom(m, "Monkey", "He's holding a flower. You REALLY want that flower. You need to trade something with it.");
+  addRoom(m, "Ending Room", "This room has a sense of finality to it.");
+  addRoom(m, "East Eastern Corridor", "Another corridor. Very east. You can tell because.");
+  addRoom(m, "Red Ladder Up", "A ladder that goes up. Also suspiciously red.");
+  addRoom(m, "Tree", "Looks like you can't go back down.");
+  addRoom(m, "Art Room", "SO MANY ART SUPPLIES WOOOOOOOOO");
+  addRoom(m, "Computer Room", "Coding looks cool");
+  addRoom(m, "Red Ladder Down", "Ladder, red, yadda yadda. Also goes down.");
   
   bool running = true;
   char* command;
@@ -22,6 +43,10 @@ int main() {
     running = parse(command);
   }
   return 0;
+}
+
+void addRoom(map<char*, Room*>* m, char* title, char* desc*) {
+  (*m)[title] = new Room(title, desc);
 }
 
 vector<char*>* split(char* c, char delim) {
@@ -49,9 +74,10 @@ bool parse(char* c) {
     }
   }
   char* command = commands -> at(0);
-  if (strcmp(command, "HELP")) {
+  if (strcmp(command, "HELP") == 0) {
     printHelp();
-  }
+  } else if (strcmp(command, "GO")) {
+    goExit(commands);
   return true;
 }
   
