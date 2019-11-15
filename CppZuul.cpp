@@ -33,8 +33,25 @@ int main() {
   addRoom(m, "Computer Room", "Coding looks cool");
   addRoom(m, "Red Ladder Down", "No but why is it red?");
 
+  //Floor One
   (*m)["Chest Room"] -> setExit("EAST", (*m)["Waterfall"]);
+  (*m)["Waterfall"] -> setExit("EAST", (*m)["Locksmith"]);
+  (*m)["Waterfall"] -> setExit("SOUTH", (*m)["Red Stairs Up"]);
+  (*m)["Waterfall"] -> setExit("WEST", (*m)["Chest Room"]);
+  (*m)["Red Stairs Up"] -> setExit("NORTH", (*m)["Waterfall"]);
+  (*m)["Red Stairs Up"] -> setExit("UP", (*m)["Red Stairs Down"]);
   
+  //Floor Two
+  (*m)["Lonely Room"] -> setExit("EAST", (*m)["Water Fountain"]);
+  (*m)["Water Fountain"] -> setExit("WEST", (*m)["Lonely Room"]);
+  (*m)["Water Fountain"] -> setExit("SOUTH", (*m)["Western Corridor"]);
+  (*m)["Water Fountain"] -> setExit("EAST", (*m)["A Tree"]);
+  (*m)["Lonely Room"] -> toggleLock("EAST", 1);
+  (*m)["Water Fountain"] -> toggleLock("EAST", 2);
+
+
+  
+  Room* currentRoom = (*m)["Lonely Room"];
   bool running = true;
   char* command;
   while (running) {
