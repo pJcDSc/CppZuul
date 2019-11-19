@@ -16,6 +16,12 @@ class Item {
   //Overloaded constructor
   Item(char*, int);
 
+  //Get Name
+  char* getName();
+
+  //Get Key Val
+  int getKeyVal();
+  
   //Destructor
   ~Item();
 

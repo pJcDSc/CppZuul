@@ -16,6 +16,14 @@ Item::Item(char* c, int i) {
   name = c;
 }
 
+char* Item::getName() {
+  return name;
+}
+
+int Item::getKeyVal() {
+  return keyVal;
+}
+
 Item::~Item() {
   cout << "Item Destructor called" << endl;
   delete name;

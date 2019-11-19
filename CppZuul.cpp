@@ -9,9 +9,9 @@ using namespace std;
 
 void addRoom(map<char*, Room*>*, char*, char*); 
 vector<char*>* split(char*, char);
-bool parse(char*, Room*);
+bool parse(char*, Room**, vector<Item*>*);
 void printHelp();
-void goExit(vector<char*>*, Room*);
+void goExit(vector<char*>*, Room**, vector<Item*>*);
 
 int main() {  
   map<char*, Room*>* m = new map<char*, Room*>;
@@ -75,7 +75,7 @@ int main() {
     cin.clear();
     cin.ignore(9999, '\n');
 
-    running = parse(command, currentRoom);
+    running = parse(command, &currentRoom, inventory);
   }
   return 0;
 }
@@ -101,7 +101,7 @@ vector<char*>* split(char* c, char delim) {
   return v;
 }
 
-bool parse(char* c, Room* currentRoom) {
+bool parse(char* c, Room** currentRoom, vector<Item*>* inventory) {
   vector<char*>* commands = split(c, ' ');
   for(int i = 0; i < commands -> size(); i++) {
     for(int j = 0; j < strlen(commands -> at(i)); j++) {
@@ -112,7 +112,7 @@ bool parse(char* c, Room* currentRoom) {
   if (strcmp(command, "HELP") == 0) {
     printHelp();
   } else if (strcmp(command, "GO") == 0) {
-    goExit(commands, currentRoom);
+    goExit(commands, currentRoom, inventory);
   } else {
     cout << "Sorry, command not recognized" << endl;
   }
@@ -128,31 +128,51 @@ void printHelp() {
   cout << "\"Inventory\"/\"Items\": Print items in your inventory" << endl;
 }
 
-void goExit(vector<char*>* c, Room* currentRoom) {
+void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
   cout << "Go called" << endl;
   if (c -> size() < 2) {
     cout << "Where go?" << endl;
     return;
   }
-  map<char*, Room*>* exits = currentRoom -> getExits();
+  map<char*, Room*>* exits = (*currentRoom) -> getExits();
 
   char* direction = c -> at(1);
   for (int i = 0; i < strlen(direction); i++) {
     direction[i] = toupper(direction[i]);
   }
 
-  cout << currentRoom << endl;
   map<char*, Room*>::iterator it;
   for(it = exits -> begin(); it != exits -> end(); ++it) {
-    cout << it -> first << ", " << (*exits)[it -> first] << endl;
-  }
-  for(it = exits -> begin(); it != exits -> end(); ++it) {
-    if (strcmp(it->first, direction) == 0) {
-      //For now (later need to check lock)
-      cout << (*exits)[direction] << endl;
-      currentRoom = (*exits)[direction];
-      cout << currentRoom << endl;
-      cout << "Changed Room" << endl;
+    if (strcmp(it -> first, direction) == 0) {
+      if ((*currentRoom)->getLocked(it->first) != 0) {
+	int lockVal = (*currentRoom)->getLocked(it->first);
+	vector<Item*>::iterator iit = inventory -> begin();
+	while(iit != inventory -> end()) {
+	  if (lockVal == (*iit) -> getKeyVal()) {
+	    cout << "You have the key. Unlock? (y/n)" << endl;
+	    char* in = new char();
+	    bool firstTime = true;
+	    while (strcmp(in, "y") != 0 && strcmp(in, "n") != 0) {
+	      if(!firstTime) cout << "Please enter either \"y\" or \"n\"" << endl;
+	      cin.get(in, 20);
+	      firstTime = false;
+	    }
+	    if (strcmp(in, "y") == 0) {
+	      (*currentRoom) -> toggleLock(it->first, 0);
+	      (*currentRoom) = it -> second;
+	      inventory -> erase(iit);
+	      delete *iit;
+	      return;
+	    } else {
+	      cout << "You don't use it." << endl;
+	      return;
+	    }
+	  }
+	}
+	cout << "It's locked." << endl;
+	return;
+      }
+      (*currentRoom) = it -> second;
       return;
     }
   }
