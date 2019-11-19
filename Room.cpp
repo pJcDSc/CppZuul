@@ -19,6 +19,11 @@ Room::Room(char* n, char* d) {
   cout << "Room constructor called with name '" << n << "' and description '" << d << "'" << endl;
   this -> name = n;
   this -> desc = d;
+
+  itemList = new vector<Item*>();
+  exits = new map<char*, Room*>();
+  exitDescs = new map<char*, char*>();
+  exitLocked = new map<char*, int>();
 }
 
 //Get name

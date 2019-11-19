@@ -12,8 +12,15 @@ Room Class Header
 
 using namespace std;
 
-class Room {
+struct cmp_str {
+    bool operator()(char const *a, char const *b) const
+    {
+      return strcmp(a,b) < 0;
+    }
+  };
 
+class Room {
+  
  public:
 
   //Constructor
@@ -59,7 +66,7 @@ class Room {
 
   vector<Item*> v; //Vector for itemList
   vector<Item*>* itemList;
-  map<char*, Room*>* exits;
+  map<char*, Room*, str_cmp>* exits;
   map<char*, char*>* exitDescs;
   map<char*, int>* exitLocked;
   char* desc;
