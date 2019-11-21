@@ -52,7 +52,6 @@ void Room::removeItem(Item* i) {
   vector<Item*>::iterator it = itemList -> begin();
   while(it != itemList -> end()) {
     if (i == *it) {
-      delete *it;
       itemList -> erase(it);
       return;
     }

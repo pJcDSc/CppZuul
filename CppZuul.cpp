@@ -14,6 +14,7 @@ void printHelp();
 void goExit(vector<char*>*, Room**, vector<Item*>*);
 void getItem(vector<char*>*, Room**, vector<Item*>*);
 void dropItem(vector<char*>*, Room**, vector<Item*>*);
+void printInv(vector<Item*>*);
 
 int main() {  
   map<char*, Room*>* m = new map<char*, Room*>;
@@ -68,6 +69,7 @@ int main() {
   bool running = true;
   char* command = new char();
   while (running) {
+    cout << endl;
     command = new char();
     cout << "You are in " << currentRoom -> getName() << "." << endl;
     cout << currentRoom -> getDescription() << endl;
@@ -78,14 +80,19 @@ int main() {
       cout << it -> first << " ";
     }
     cout << endl;
-    cout << "Items in this room: ";
+    bool hasItems = false;
     vector<Item*>* items = currentRoom -> getItems();
     vector<Item*>::iterator itemIt = items -> begin();
     while (itemIt != items -> end()) {
+      if (!hasItems) {
+	cout << "Items in this room: ";
+	hasItems = true;
+      }
       cout << (*itemIt) -> getName() << " ";
       ++itemIt;
     }
-    cout << endl;
+    if(!hasItems) cout << "No items in this room.";
+    cout << endl << endl;
     
     cin.get(command, 80);
     cin.clear();
@@ -133,7 +140,13 @@ bool parse(char* c, Room** currentRoom, vector<Item*>* inventory) {
     getItem(commands, currentRoom, inventory);
   } else if (strcmp(command, "DROP") == 0) {
     dropItem(commands, currentRoom, inventory);
-  } else {
+  } else if (strcmp(command, "INVENTORY") == 0 || strcmp(command, "ITEMS") == 0) {
+    printInv(inventory);
+  } else if (strcmp(command, "QUIT") == 0) {
+    cout << "Thanks for playing!" << endl;
+    return false;
+  }
+  else {
     cout << "Sorry, command not recognized" << endl;
   }
   return true;
@@ -149,7 +162,6 @@ void printHelp() {
 }
 
 void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
-  cout << "Go called" << endl;
   if (c -> size() < 2) {
     cout << "Where go?" << endl;
     return;
@@ -175,13 +187,14 @@ void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
 	    while (strcmp(in, "y") != 0 && strcmp(in, "n") != 0) {
 	      if(!firstTime) cout << "Please enter either \"y\" or \"n\"" << endl;
 	      cin.get(in, 20);
+	      cin.clear();
+	      cin.ignore();
 	      firstTime = false;
 	    }
 	    if (strcmp(in, "y") == 0) {
 	      (*currentRoom) -> toggleLock(it->first, 0);
 	      (*currentRoom) = it -> second;
 	      inventory -> erase(iit);
-	      delete *iit;
 	      return;
 	    } else {
 	      cout << "You don't use it." << endl;
@@ -189,7 +202,6 @@ void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
 	    }
 	  }
 	}
-	cout << "It's locked." << endl;
 	cout << (*currentRoom)->getExitDesc(it -> first) << endl;
 	return;
       }
@@ -209,11 +221,12 @@ void getItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* invento
   
   vector<Item*>::iterator it = roomItems -> begin();
   while (it != roomItems -> end()) {
-    char* modItem = (*it) -> getName();
+    char* modItem = new char();
+    strcpy(modItem, (*it)->getName());
     for (int i = 0; i < strlen(modItem); i++) {
       modItem[i] = toupper(modItem[i]);
     }
-    if (strcmp(commands->at(1), (*it) -> getName()) == 0) {
+    if (strcmp(commands->at(1), modItem) == 0) {
       (*currentRoom)->removeItem(*it);
       inventory -> push_back(*it);
       cout << (*it) -> getName() << " has been added to your inventory." << endl;
@@ -226,4 +239,19 @@ void getItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* invento
 
 void dropItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* inventory) {
 
+}
+
+void printInv(vector<Item*>* inventory) {
+  vector<Item*>::iterator it = inventory -> begin();
+  bool hasItems = false;
+  while (it != inventory -> end()) {
+    if (!hasItems) {
+      cout << "You have: ";
+      hasItems = true;
+    }
+    cout << (*it)->getName() << " ";
+    ++it;
+  }  
+  if(!hasItems) cout << "You have no items :(";
+  cout << endl;
 }
