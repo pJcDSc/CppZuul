@@ -12,6 +12,8 @@ vector<char*>* split(char*, char);
 bool parse(char*, Room**, vector<Item*>*);
 void printHelp();
 void goExit(vector<char*>*, Room**, vector<Item*>*);
+void getItem(vector<char*>*, Room**, vector<Item*>*);
+void dropItem(vector<char*>*, Room**, vector<Item*>*);
 
 int main() {  
   map<char*, Room*>* m = new map<char*, Room*>;
@@ -42,6 +44,10 @@ int main() {
   (*m)["Waterfall"] -> setExit("WEST", (*m)["Chest Room"]);
   (*m)["Red Stairs Up"] -> setExit("NORTH", (*m)["Waterfall"]);
   (*m)["Red Stairs Up"] -> setExit("UP", (*m)["Red Stairs Down"]);
+
+  (*m)["Waterfall"] -> toggleLock("EAST", 3);
+  
+  (*m)["Chest Room"] -> addItem(new Item("Red_Key", 2));
   
   //Floor Two
   (*m)["Lonely Room"] -> setExit("EAST", (*m)["Water Fountain"]);
@@ -49,12 +55,14 @@ int main() {
   (*m)["Water Fountain"] -> setExit("SOUTH", (*m)["Western Corridor"]);
   (*m)["Water Fountain"] -> setExit("EAST", (*m)["A Tree"]);
   (*m)["A Tree"] -> setExit("WEST", (*m)["Water Fountain"]);
-  (*m)["A Tree"] -> setExit("UP", (*m)["Tree"]);
-  
-  (*m)["A Tree"] -> toggleLock("UP", 1);
-  (*m)["Lonely Room"] -> toggleLock("EAST", 1);
-  (*m)["Water Fountain"] -> toggleLock("EAST", 2);
 
+  (*m)["Lonely Room"] -> toggleLock("EAST", 1);
+  (*m)["Lonely Room"] -> setExitDesc("EAST", "A locked yellow door blocks your way.");
+  (*m)["Water Fountain"] -> toggleLock("EAST", 2);
+  (*m)["Water Fountain"] -> setExitDesc("EAST", "A locked red door blocks your way.");
+
+  (*m)["Lonely Room"] -> addItem(new Item("Yellow_Key", 1));
+  
   vector<Item*>* inventory = new vector<Item*>();
   Room* currentRoom = (*m)["Lonely Room"];
   bool running = true;
@@ -68,6 +76,14 @@ int main() {
     map<char*, Room*>::iterator it;
     for(it = exits -> begin(); it != exits -> end(); ++it) {
       cout << it -> first << " ";
+    }
+    cout << endl;
+    cout << "Items in this room: ";
+    vector<Item*>* items = currentRoom -> getItems();
+    vector<Item*>::iterator itemIt = items -> begin();
+    while (itemIt != items -> end()) {
+      cout << (*itemIt) -> getName() << " ";
+      ++itemIt;
     }
     cout << endl;
     
@@ -113,6 +129,10 @@ bool parse(char* c, Room** currentRoom, vector<Item*>* inventory) {
     printHelp();
   } else if (strcmp(command, "GO") == 0) {
     goExit(commands, currentRoom, inventory);
+  } else if (strcmp(command, "GET") == 0) {
+    getItem(commands, currentRoom, inventory);
+  } else if (strcmp(command, "DROP") == 0) {
+    dropItem(commands, currentRoom, inventory);
   } else {
     cout << "Sorry, command not recognized" << endl;
   }
@@ -170,6 +190,7 @@ void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
 	  }
 	}
 	cout << "It's locked." << endl;
+	cout << (*currentRoom)->getExitDesc(it -> first) << endl;
 	return;
       }
       (*currentRoom) = it -> second;
@@ -177,4 +198,32 @@ void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
     }
   }
   cout << "Could not find that exit" << endl;
+}
+
+void getItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* inventory) {
+  if (commands -> size() < 2) {
+    cout << "Get what?" << endl;
+    return;
+  }
+  vector<Item*>* roomItems = (*currentRoom) -> getItems();
+  
+  vector<Item*>::iterator it = roomItems -> begin();
+  while (it != roomItems -> end()) {
+    char* modItem = (*it) -> getName();
+    for (int i = 0; i < strlen(modItem); i++) {
+      modItem[i] = toupper(modItem[i]);
+    }
+    if (strcmp(commands->at(1), (*it) -> getName()) == 0) {
+      (*currentRoom)->removeItem(*it);
+      inventory -> push_back(*it);
+      cout << (*it) -> getName() << " has been added to your inventory." << endl;
+      return;
+    }
+    ++it;
+  }
+  cout << "Item not found. " << endl;
+}
+
+void dropItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* inventory) {
+
 }
