@@ -47,8 +47,10 @@ int main() {
   (*m)["Red Stairs Up"] -> setExit("UP", (*m)["Red Stairs Down"]);
 
   (*m)["Waterfall"] -> toggleLock("EAST", 3);
+  (*m)["Waterfall"] -> setExitDesc("EAST", "A man blocks your way. He says: \"Give me flowers, or give me death.\"");
   
   (*m)["Chest Room"] -> addItem(new Item("Red_Key", 2));
+  (*m)["Locksmith"] -> addItem(new Item("Green_Key", 4));
   
   //Floor Two
   (*m)["Lonely Room"] -> setExit("EAST", (*m)["Water Fountain"]);
@@ -56,13 +58,41 @@ int main() {
   (*m)["Water Fountain"] -> setExit("SOUTH", (*m)["Western Corridor"]);
   (*m)["Water Fountain"] -> setExit("EAST", (*m)["A Tree"]);
   (*m)["A Tree"] -> setExit("WEST", (*m)["Water Fountain"]);
-
+  (*m)["Western Corridor"] -> setExit("NORTH", (*m)["Water Fountain"]);
+  (*m)["Western Corridor"] -> setExit("WEST", (*m)["Kitchen"]);
+  (*m)["Western Corridor"] -> setExit("SOUTH", (*m)["Red Stairs Down"]);
+  (*m)["Kitchen"] -> setExit("EAST", (*m)["Western Corridor"]);
+  (*m)["Red Stairs Down"] -> setExit("NORTH", (*m)["Western Corridor"]);
+  (*m)["Red Stairs Down"] -> setExit("DOWN", (*m)["Red Stairs Up"]);
+  (*m)["Eastern Corridor"] -> setExit("WEST", (*m)["Western Corridor"]);
+  (*m)["Eastern Corridor"] -> setExit("EAST", (*m)["East Eastern Corridor"]);
+  (*m)["Eastern Corridor"] -> setExit("SOUTH", (*m)["Monkey"]);
+  (*m)["East Eastern Corridor"] -> setExit("WEST", (*m)["Eastern Corridor"]);
+  (*m)["East Eastern Corridor"] -> setExit("EAST", (*m)["Red Ladder Up"]);
+  (*m)["Red Ladder Up"] -> setExit("WEST", (*m)["East Eastern Corridor"]);
+  (*m)["Red Ladder Up"] -> setExit("UP", (*m)["Red Ladder Down"]);
+  (*m)["Monkey"] -> setExit("NORTH", (*m)["Eastern Corridor"]);
+  (*m)["Monkey"] -> setExit("SOUTH", (*m)["Ending Room"]);
+  
   (*m)["Lonely Room"] -> toggleLock("EAST", 1);
   (*m)["Lonely Room"] -> setExitDesc("EAST", "A locked yellow door blocks your way.");
   (*m)["Water Fountain"] -> toggleLock("EAST", 2);
   (*m)["Water Fountain"] -> setExitDesc("EAST", "A locked red door blocks your way.");
+  (*m)["Monkey"] -> toggleLock("SOUTH", 4);
+  (*m)["Monkey"] -> setExitDesc("SOUTH", "A locked green door blocks your way. Something cool is behind it.");
 
   (*m)["Lonely Room"] -> addItem(new Item("Yellow_Key", 1));
+  (*m)["Kitchen"] -> addItem(new Item("Wrench"));
+
+  //Floor Three
+  (*m)["Tree"] -> setExit("EAST", (*m)["Art Room"]);
+  (*m)["Art Room"] -> setExit("WEST", (*m)["Tree"]);
+  (*m)["Art Room"] -> setExit("EAST", (*m)["Computer Room"]);
+  (*m)["Computer Room"] -> setExit("WEST", (*m)["Art Room"]);
+  (*m)["Computer Room"] -> setExit("SOUTH", (*m)["Red Ladder Down"]);
+  (*m)["Red Ladder Down"] -> setExit("DOWN", (*m)["Red Ladder Up"]);
+
+  (*m)["Art Room"] -> addItem(new Item("Pencils"));
   
   vector<Item*>* inventory = new vector<Item*>();
   Room* currentRoom = (*m)["Lonely Room"];
@@ -201,6 +231,7 @@ void goExit(vector<char*>* c, Room** currentRoom, vector<Item*>* inventory) {
 	      return;
 	    }
 	  }
+	  ++iit;
 	}
 	cout << (*currentRoom)->getExitDesc(it -> first) << endl;
 	return;
