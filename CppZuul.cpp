@@ -269,7 +269,27 @@ void getItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* invento
 }
 
 void dropItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* inventory) {
+  if (commands -> size() < 2) {
+    cout << "Drop What?" << endl;
+    return;
+  }
 
+  vector<Item*>::iterator it = inventory -> begin();
+  while (it != inventory -> end()) {
+    char* modItem = new char();
+    strcpy(modItem, (*it)->getName());
+    for (int i = 0; i < strlen(modItem); i++) {
+      modItem[i] = toupper(modItem[i]);
+    }
+    if (strcmp(modItem, commands -> at(1)) == 0) {
+      inventory -> erase(it);
+      (*currentRoom)->addItem(*it);
+      cout << "You dropped " << (*it)->getName() << endl;
+      return;
+    }
+    ++it;
+  }
+  cout << "Could not find item." << endl;
 }
 
 void printInv(vector<Item*>* inventory) {
