@@ -284,6 +284,13 @@ void dropItem(vector<char*>* commands, Room** currentRoom, vector<Item*>* invent
     if (strcmp(modItem, commands -> at(1)) == 0) {
       inventory -> erase(it);
       (*currentRoom)->addItem(*it);
+      if (strcmp((*currentRoom)->getName(), "Water Fountain") == 0 && strcmp(modItem, "WRENCH") == 0) {
+	cout << "Congratulations! You fixed the water fountain!" << endl;
+	cout << "Not sure why dropping a wrench fixes the fountain though..." << endl;
+	(*currentRoom) -> setDescription("A water fountain sprays water everywhere...");
+	(*currentRoom) -> addItem(new Item("Water"));
+      }
+	  
       cout << "You dropped " << (*it)->getName() << endl;
       return;
     }

@@ -37,6 +37,9 @@ class Room {
   //Get Description
   char* getDescription();
 
+  //Set Description
+  void setDescription(char*);
+
   //Toggle locked exit
   int toggleLock(char*, int);
 

@@ -36,6 +36,11 @@ char* Room::getDescription() {
   return desc;
 }
 
+//Set Description
+void Room::setDescription(char* c) {
+  desc = c;
+}
+
 //Get Items
 vector<Item*>* Room::getItems() {
   return itemList;
