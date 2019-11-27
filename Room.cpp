@@ -1,7 +1,7 @@
 /*
 Author: Peter Jin
 Date: 10/16/2019
-Room Class
+Room Class 
 */
 
 #include <iostream>
@@ -16,7 +16,6 @@ using namespace std;
 
 //Constructor
 Room::Room(char* n, char* d) {
-  cout << "Room constructor called with name '" << n << "' and description '" << d << "'" << endl;
   this -> name = n;
   this -> desc = d;
 
@@ -60,6 +59,7 @@ void Room::removeItem(Item* i) {
       itemList -> erase(it);
       return;
     }
+    ++it;
   }
 }
 
@@ -97,7 +97,6 @@ int Room::toggleLock(char* c, int i) {
 
 //Destructor 
 Room::~Room() {
-  cout << "Room Destructor Called" << endl;
   vector<Item*>::iterator vecIt = itemList -> begin();
   while (vecIt != itemList -> end()) {
     delete (*vecIt);

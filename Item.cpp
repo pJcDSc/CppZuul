@@ -1,30 +1,37 @@
+/*
+Author: Peter Jin
+Date: 11/26/19
+Item.Cpp Class stores basic functions, constructor, and destructor for items in Zuul
+*/
 #include <iostream>
 #include <cstring>
 #include "Item.h"
 
 using namespace std;
 
+//Constructor
 Item::Item(char* c) {
-  cout << "Item constructor called with name " << c << endl;
   name = c;
   keyVal = 0;
 }
 
+//Overloaded Constructor
 Item::Item(char* c, int i) {
-  cout << "Overloaded Item Constructor called with name " << c << " and keyval " << i << endl;
   keyVal = i;
   name = c;
 }
 
+//Get Item Name
 char* Item::getName() {
   return name;
 }
 
+//Get Key Value of Item
 int Item::getKeyVal() {
   return keyVal;
 }
 
+//Destructor
 Item::~Item() {
-  cout << "Item Destructor called" << endl;
   delete name;
 }

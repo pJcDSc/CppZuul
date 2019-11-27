@@ -1,3 +1,8 @@
+/*
+Author: Peter Jin
+Date: 11/26/19
+Item.h class declares functions and vars in item class for CppZuul
+*/
 #ifndef ITEM_H
 #define ITEM_H
 
