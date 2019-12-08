@@ -113,6 +113,7 @@ int main() {
   (*m)["Computer Room"] -> setExit("WEST", (*m)["Art Room"]);
   (*m)["Computer Room"] -> setExit("SOUTH", (*m)["Red Ladder Down"]);
   (*m)["Red Ladder Down"] -> setExit("DOWN", (*m)["Red Ladder Up"]);
+  (*m)["Red Ladder Down"] -> setExit("NORTH", (*m)["Computer Room"]);
 
   //Floor Three Items
   (*m)["Art Room"] -> addItem(new Item("Pencils"));
